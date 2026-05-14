@@ -1,0 +1,209 @@
+import { useState } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+export default function SmartHouseERP() {
+  const [sales, setSales] = useState([])
+  const [product, setProduct] = useState('')
+  const [price, setPrice] = useState('')
+  const [safe, setSafe] = useState(0)
+
+  const addSale = () => {
+    if (!product || !price) return
+
+    const newSale = {
+      id: Date.now(),
+      product,
+      price: Number(price),
+      date: new Date().toLocaleString('ar-EG')
+    }
+
+    setSales([newSale, ...sales])
+    setSafe(safe + Number(price))
+    setProduct('')
+    setPrice('')
+  }
+
+  const totalSales = sales.reduce((a, b) => a + b.price, 0)
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4">
+      <div className="max-w-7xl mx-auto">
+
+        <div className="bg-black text-white rounded-3xl p-6 mb-6 shadow-2xl">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <h1 className="text-4xl font-bold">SMART HOUSE ERP</h1>
+              <p className="text-gray-300 mt-2">
+                نظام احترافي لإدارة المبيعات والخدمات والعملاء
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-green-600 rounded-2xl p-4 text-center min-w-[140px]">
+                <div className="text-sm">إجمالي المبيعات</div>
+                <div className="text-2xl font-bold">{totalSales} ج</div>
+              </div>
+
+              <div className="bg-yellow-500 rounded-2xl p-4 text-center min-w-[140px]">
+                <div className="text-sm">الخزينة</div>
+                <div className="text-2xl font-bold">{safe} ج</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+          <Card className="rounded-3xl shadow-xl border-0">
+            <CardContent className="p-5">
+              <h2 className="text-2xl font-bold mb-4 text-green-700">
+                إدارة المبيعات
+              </h2>
+
+              <div className="space-y-3">
+                <Input
+                  placeholder="اسم المنتج أو الخدمة"
+                  value={product}
+                  onChange={(e) => setProduct(e.target.value)}
+                />
+
+                <Input
+                  placeholder="السعر"
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+
+                <Button
+                  className="w-full rounded-2xl text-lg h-12"
+                  onClick={addSale}
+                >
+                  إضافة عملية بيع
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl shadow-xl border-0">
+            <CardContent className="p-5">
+              <h2 className="text-2xl font-bold mb-4 text-red-700">
+                فودافون كاش وإنستا باي
+              </h2>
+
+              <div className="space-y-3">
+                <Input placeholder="رقم العميل" />
+                <Input placeholder="المبلغ" />
+
+                <select className="w-full border rounded-xl p-3">
+                  <option>محفظة فودافون 1</option>
+                  <option>محفظة فودافون 2</option>
+                  <option>محفظة فودافون 3</option>
+                  <option>إنستا باي</option>
+                </select>
+
+                <Button className="w-full rounded-2xl h-12 bg-red-600 hover:bg-red-700">
+                  تسجيل العملية
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl shadow-xl border-0">
+            <CardContent className="p-5">
+              <h2 className="text-2xl font-bold mb-4 text-purple-700">
+                تصوير 4×6
+              </h2>
+
+              <div className="space-y-3">
+                <Input placeholder="اسم العميل" />
+                <Input placeholder="عدد الصور" />
+                <Input placeholder="المطلوب فورى أو تانى يوم" />
+
+                <Button className="w-full rounded-2xl h-12 bg-purple-600 hover:bg-purple-700">
+                  حفظ الطلب
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
+
+          <Card className="rounded-3xl shadow-xl border-0">
+            <CardContent className="p-5">
+              <h2 className="text-2xl font-bold mb-4 text-blue-700">
+                متابعة الصيانة والعملاء
+              </h2>
+
+              <div className="space-y-3 mb-4">
+                <Input placeholder="اسم العميل" />
+                <Input placeholder="نوع الجهاز" />
+                <Input placeholder="العطل" />
+                <Input placeholder="المبلغ المطلوب" />
+              </div>
+
+              <Button className="w-full rounded-2xl h-12 bg-blue-600 hover:bg-blue-700">
+                تسجيل جهاز صيانة
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-3xl shadow-xl border-0">
+            <CardContent className="p-5">
+              <h2 className="text-2xl font-bold mb-4 text-orange-700">
+                المشتريات والمخزن
+              </h2>
+
+              <div className="space-y-3">
+                <Input placeholder="اسم المنتج" />
+                <Input placeholder="الكمية" />
+                <Input placeholder="سعر الشراء" />
+                <Input placeholder="سعر البيع" />
+              </div>
+
+              <Button className="w-full rounded-2xl h-12 mt-4 bg-orange-600 hover:bg-orange-700">
+                إضافة للمخزن
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="rounded-3xl shadow-xl border-0 mt-6">
+          <CardContent className="p-5 overflow-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">
+                آخر عمليات البيع
+              </h2>
+            </div>
+
+            <table className="w-full text-center border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-3">الخدمة</th>
+                  <th className="p-3">السعر</th>
+                  <th className="p-3">التاريخ</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {sales.map((sale) => (
+                  <tr key={sale.id} className="border-b">
+                    <td className="p-3">{sale.product}</td>
+                    <td className="p-3 font-bold text-green-700">
+                      {sale.price} ج
+                    </td>
+                    <td className="p-3 text-sm text-gray-500">
+                      {sale.date}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
